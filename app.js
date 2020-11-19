@@ -14,27 +14,27 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({
     extended: false
 }))
+app.use('/users', require('./routes/users'));
+app.use('/wiki', require('./routes/wiki'));
 
 // (async()=> {
 //     await User.sync
 //     await Page.sync
 // })()
 
-
-app.get('/', (req, res) =>{
-    res.send(layout(' '));
+app.get('/', (req, res, next) =>{
+    res.redirect('/wiki');
 })
 
 const PORT = 3000;
 
-
 const init = async () => {
-    await db.sync();
+    await db.sync({force: true});
     app.listen(PORT, () => {
       console.log(`Server is listening on port ${PORT}!`);
     });
   }
-  
+
   init();
 
 // app.listen(3000, () =>{
